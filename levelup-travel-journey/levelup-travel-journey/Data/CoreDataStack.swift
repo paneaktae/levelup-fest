@@ -23,7 +23,8 @@ final class CoreDataStack {
             if let description = container.persistentStoreDescriptions.first {
                 description.shouldInferMappingModelAutomatically = true
                 description.shouldMigrateStoreAutomatically = true
-                // WAL is default for SQLite; keep defaults for performance
+                // Explicitly set WAL journaling (usually default, but ensure it)
+                description.setOption(["journal_mode": "WAL"] as NSDictionary, forKey: NSSQLitePragmasOption)
             }
         }
 
@@ -38,6 +39,12 @@ final class CoreDataStack {
     }
 
     var context: NSManagedObjectContext { container.viewContext }
+
+    func newBackgroundContext() -> NSManagedObjectContext {
+        let ctx = container.newBackgroundContext()
+        ctx.mergePolicy = NSMergeByPropertyStoreTrumpMergePolicy
+        return ctx
+    }
 
     func saveContext() {
         let context = container.viewContext

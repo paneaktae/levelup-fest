@@ -1,4 +1,68 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="1" systemVersion="11A491" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithCloudKit="false" userDefinedModelVersionIdentifier="">
-    <elements/>
+    <entity name="Trip" representedClassName="Trip" syncable="YES">
+        <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" optional="NO" attributeType="String"/>
+        <attribute name="destination" optional="NO" attributeType="String"/>
+        <attribute name="startDate" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="endDate" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
+        <relationship name="places" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Place" inverseName="trip" inverseEntity="Place"/>
+        <relationship name="expenses" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Expense" inverseName="trip" inverseEntity="Expense"/>
+        <relationship name="voiceNotes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="VoiceNote" inverseName="trip" inverseEntity="VoiceNote"/>
+    </entity>
+
+    <entity name="Place" representedClassName="Place" syncable="YES">
+        <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" optional="NO" attributeType="String"/>
+        <attribute name="dayIndex" optional="NO" attributeType="Integer 16" defaultValueString="0"/>
+        <attribute name="startTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="endTime" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="latitude" optional="YES" attributeType="Double"/>
+        <attribute name="longitude" optional="YES" attributeType="Double"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
+        <relationship name="trip" optional="NO" toMany="NO" deletionRule="Nullify" destinationEntity="Trip" inverseName="places" inverseEntity="Trip"/>
+        <relationship name="voiceNotes" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="VoiceNote" inverseName="place" inverseEntity="VoiceNote"/>
+    </entity>
+
+    <entity name="Expense" representedClassName="Expense" syncable="YES">
+        <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="amountTHB" optional="NO" attributeType="Decimal"/>
+        <attribute name="category" optional="NO" attributeType="String"/>
+        <attribute name="note" optional="YES" attributeType="String"/>
+        <attribute name="createdAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="originalAmount" optional="YES" attributeType="Decimal"/>
+        <attribute name="originalCurrency" optional="YES" attributeType="String"/>
+        <attribute name="fxRateUsed" optional="YES" attributeType="Decimal"/>
+        <attribute name="attachmentPath" optional="YES" attributeType="String"/>
+        <relationship name="trip" optional="NO" toMany="NO" deletionRule="Nullify" destinationEntity="Trip" inverseName="expenses" inverseEntity="Trip"/>
+    </entity>
+
+    <entity name="VoiceNote" representedClassName="VoiceNote" syncable="YES">
+        <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="audioPath" optional="NO" attributeType="String"/>
+        <attribute name="transcript" optional="YES" attributeType="String"/>
+        <attribute name="language" optional="NO" attributeType="String"/>
+        <attribute name="createdAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="status" optional="NO" attributeType="String"/>
+        <relationship name="trip" optional="NO" toMany="NO" deletionRule="Nullify" destinationEntity="Trip" inverseName="voiceNotes" inverseEntity="Trip"/>
+        <relationship name="place" optional="YES" toMany="NO" deletionRule="Nullify" destinationEntity="Place" inverseName="voiceNotes" inverseEntity="Place"/>
+    </entity>
+
+    <entity name="DataPack" representedClassName="DataPack" syncable="YES">
+        <attribute name="id" optional="NO" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" optional="NO" attributeType="String"/>
+        <attribute name="version" optional="NO" attributeType="String"/>
+        <attribute name="type" optional="NO" attributeType="String"/>
+        <attribute name="filePath" optional="NO" attributeType="String"/>
+        <attribute name="installedAt" optional="NO" attributeType="Date" usesScalarValueType="NO"/>
+    </entity>
+
+    <elements>
+        <element name="Trip" positionX="160" positionY="160" width="128" height="128"/>
+        <element name="Place" positionX="160" positionY="336" width="128" height="128"/>
+        <element name="Expense" positionX="160" positionY="512" width="128" height="128"/>
+        <element name="VoiceNote" positionX="160" positionY="688" width="128" height="128"/>
+        <element name="DataPack" positionX="160" positionY="864" width="128" height="128"/>
+    </elements>
 </model>

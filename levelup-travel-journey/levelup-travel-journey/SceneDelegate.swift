@@ -10,16 +10,17 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
+    private var coordinator: AppCoordinator?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-
+        // Apply global theme
+        Theme.applyGlobalAppearance()
         let window = UIWindow(windowScene: windowScene)
-        let rootVC = ViewController()
-        let nav = UINavigationController(rootViewController: rootVC)
-        window.rootViewController = nav
-        window.makeKeyAndVisible()
+        let coordinator = AppCoordinator(window: window)
+        coordinator.start()
         self.window = window
+        self.coordinator = coordinator
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
